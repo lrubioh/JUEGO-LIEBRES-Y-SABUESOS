@@ -22,21 +22,21 @@ object TableroClasicoLyS extends TableroJuego:
 
   // Lista de adyacencias (grafo)
   private val grafo: Map[Posicion, Set[Posicion]] = Map(
-    I1A -> Set(MA, I1M),
-    MA -> Set(I1A, I1M, MM, D1A),
-    D1A -> Set(MA, D1M),
+    I1A -> Set(I2M, I1M, MM, MA),
+    MA -> Set(I1A, MM, D1A),
+    D1A -> Set(MA, MM, D1M, D2M),
 
 
-    I2M -> Set(I1M),
-    I1M -> Set(I2M, I1A, MA, MM, I1B),
-    MM -> Set(I1M, MA, D1M, MB),
+    I2M -> Set(I1A, I1M, I1B),
+    I1M -> Set(I2M, I1A, MM, I1B),
+    MM -> Set(I1A, MA, D1A, I1M, I1B, MB, D1B, D1M),
     D1M -> Set(MM, D1A, D2M, D1B),
-    D2M -> Set(D1M),
+    D2M -> Set(D1M, D1A, D1B),
 
 
-    I1B -> Set(I1M, MB),
+    I1B -> Set(I2M, I1M, MM, MB),
     MB -> Set(I1B, MM, D1B),
-    D1B -> Set(MB, D1M)
+    D1B -> Set(MB, D1M, MM, D2M)
   )
 
   //tengo que implementar
@@ -69,5 +69,7 @@ object TableroClasicoLyS extends TableroJuego:
     println("     \\  |  /  |  \\  |  /")
     println(s"        ${s(I1B)}-----${s(MB)}-----${s(D1B)}")
 
+  
+  "HAY QUE RELLENARLO LUEGO"
   override def esFinPartida(estado: Estado): Option[Jugador] = None 
 
