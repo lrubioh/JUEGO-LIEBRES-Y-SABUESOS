@@ -63,11 +63,11 @@ object TableroClasicoLyS extends TableroJuego:
   
   override def pintarTablero(estado: Estado): Unit =
     val s = (p: Posicion) => pintarNodo(p, estado)
-    println(s" ${s(I1A)}-----${s(MA)}-----${s(D1A)}")
-    println(" ╱ | \\ | / | \\")
-    println(s" ${s(I2M)}---${s(I1M)}-----${s(MM)}-----${s(D1M)}---${s(D2M)}")
-    println(" \\ | / | \\ | /")
-    println(s" ${s(I1B)}-----${s(MB)}-----${s(D1B)}")
+    println(s"        ${s(I1A)}-----${s(MA)}-----${s(D1A)}")
+    println("     ╱  |  \\  |  /  | \\")
+    println(s"    ${s(I2M)}---${s(I1M)}-----${s(MM)}-----${s(D1M)}---${s(D2M)}")
+    println("     \\  |  /  |  \\  |  /")
+    println(s"        ${s(I1B)}-----${s(MB)}-----${s(D1B)}")
 
   override def esFinPartida(estado: Estado): Option[Jugador] = None 
 
