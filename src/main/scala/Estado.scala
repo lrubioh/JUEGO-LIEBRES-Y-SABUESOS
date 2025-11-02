@@ -10,6 +10,7 @@ case class Estado(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador):
   def ocupadas: Set[Posicion] = sabuesos + liebre
 //con estado.liebre me devuelve la casilla de la liebre y con estado.sabuesos
 //me devuelve las casillas de los sabuesos, no necesito separarlo
+//estado.sabuesos devuelve un Set( , , ) con las tres posiciones de los sabuesos
 
 object Estado:
   // companion object para construir un estado

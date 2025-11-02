@@ -42,6 +42,9 @@ object TableroClasicoLyS extends TableroJuego:
   //tengo que implementar
   //me dice las casillas posibles a las que me puedo mover
   override def movimientosDesde(p: Posicion): Set[Posicion] =
+  // getOrElse es una funcion que me devuelve la lista de posiciones adyacentes a p(casilla) en caso
+  //de existir p y en caso contrario(la casilla pasada a la función no existiese)
+  //me devolvera siempre Set.empty
     grafo.getOrElse(p, Set.empty)
 
   override def posicionInicialLiebre: Posicion = D2M
@@ -70,6 +73,19 @@ object TableroClasicoLyS extends TableroJuego:
     println(s"        ${s(I1B)}-----${s(MB)}-----${s(D1B)}")
 
   
-  "HAY QUE RELLENARLO LUEGO"
-  override def esFinPartida(estado: Estado): Option[Jugador] = None 
+  
+  override def esFinPartida(estado: Estado): Option[Jugador] =
+    //hay dos opciones que gane la liebre o los sabuesos:
+    //si gana la liebre es porque estado.liebre == I2M
+    if (estado.liebre == posicionMetaLiebre) then
+      Some(Jugador.Liebre)
+
+    //si ganan los sabuesos es por que han acorralado a la liebre, es decir, Movimiemto
+    //Liebre es nulo, todos los posibles movimientos son casillas ocupadas por los sabuesos
+    else
+      val movimientosLiebre= MovimientoLiebre.movimientosPosibles(this, estado)
+      if movimientosLiebre.isEmpty then
+        Some(Jugador.Sabuesos)
+      else
+        None
 
