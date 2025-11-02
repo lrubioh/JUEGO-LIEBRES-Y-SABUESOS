@@ -88,4 +88,3 @@ object TableroClasicoLyS extends TableroJuego:
         Some(Jugador.Sabuesos)
       else
         None
-

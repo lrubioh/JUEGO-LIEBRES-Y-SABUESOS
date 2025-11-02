@@ -53,7 +53,3 @@ case object MovimientoSabueso extends MovimientoFicha:
     resultado //devuelvo los pares finales de movimientos posibles
 
 
-
-
-
-
