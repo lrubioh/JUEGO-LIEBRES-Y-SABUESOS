@@ -1,7 +1,6 @@
-import TableroClasicoLyS.pintarTablero
-
+import IALiebre._
 object BucleJuego:
-  def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador=
+  def bucleJuego(tablero: TableroJuego, estado: Estado, modoIA: Boolean): Jugador=
     //1 pintar tablero
     tablero.pintarTablero(estado)
 
@@ -20,35 +19,47 @@ object BucleJuego:
         if estado.turno == Jugador.Liebre then
           //calculo los movimientos posibles de la liebre
           val movimientos= MovimientoLiebre.movimientosPosibles(tablero, estado)
-          //imprimo los movimientos posibles de la liebre
-          println(s"\n Turno de la Liebre: elige un movimiento (introduciendo el número)")
-          //creo un indice que se va a ir incrementando por cada movimiento que recorra
-          var indicemovimientos = 1
-          //creo un Map vacio con el inidice y la posicion a la que se va a mover la liebre (asi puedo asociar el indice con la nueva posicion)
-          var opciones = Map.empty[Int, Posicion]
-          //recorro los movimientos de uno en uno y les voy dando un numero
-          for (posicionfinal <- movimientos) do
-            // 1 -> liebre se mueve a D1M (por ejemplo)
-            println(s" $indicemovimientos -> Liebre se mueve a $posicionfinal ")
-            //añade al mapa opciones: el par con el indice y la posicion final
-            opciones += (indicemovimientos -> posicionfinal)
-            //incrementa el indice para el siguiente movimiento
-            indicemovimientos += 1
-
-          //ahora hay que pedir al jugador el numero que esta asociado al movimiento que quiere hacer
-          val  eleccion = scala.io.StdIn.readLine("Elige movimiento:").toInt
-          //guardo en destino el valor asociado al numero elegido (accedo a posicion final atraves de el)
-          val destino = opciones(eleccion)
-
-          //ya tenemos el movimiento guardado, ahora creamos un nuevo estado con la nueva casilla de la liebre,
-          //el cambio de turno al proximo jugador(sabuesos) y las casillas de los sabuesos que se habran mantenido
-          val nuevoEstado = Estado(
-            liebre = destino,
-            sabuesos = estado.sabuesos,
-            turno = Jugador.Sabuesos
-          )
-          // vuelvo a llamar al bucle de juego con su nuevo estado para continuar la partida
-          bucleJuego(tablero,nuevoEstado)
+          if modoIA == true then
+            /**MODOIA -> LA LIEBRE SE MUEVE SOLA A LA POSICION MAS OPTIMA PARA GANAR**/
+            //quiero evaluar los movimientos en funcion a la tupla de evaluar movimientos
+            //movimientos es un Set[Posicion] que no sabemos cuantos elementos tiene, pero necesito acceder a cada uno de ellos
+            //para evaluarlos y luego quedarme con el que tenga el primer elemento mayor, en caso de haber dos iguales
+            //me quedo con el que tenga el mayor en el segundo elemento
+            
+            
+            val List()= movimientos.toList 
+          if modoIA == false then
+            /***FUNCIONAMIENTO NORMAL, IMPRIME LOS MOVIMIENTOS Y SE ELIGEN POR NUMERO**/
+            //imprimo los movimientos posibles de la liebre
+            println(s"\n Turno de la Liebre: elige un movimiento (introduciendo el número)")
+            //creo un indice que se va a ir incrementando por cada movimiento que recorra
+            var indicemovimientos = 1
+            //creo un Map vacio con el inidice y la posicion a la que se va a mover la liebre (asi puedo asociar el indice con la nueva posicion)
+            var opciones = Map.empty[Int, Posicion]
+            //recorro los movimientos de uno en uno y les voy dando un numero
+            for (posicionfinal <- movimientos) do
+              // 1 -> liebre se mueve a D1M (por ejemplo)
+              println(s" $indicemovimientos -> Liebre se mueve a $posicionfinal ")
+              //añade al mapa opciones: el par con el indice y la posicion final
+              opciones += (indicemovimientos -> posicionfinal)
+              //incrementa el indice para el siguiente movimiento
+              indicemovimientos += 1
+  
+            //ahora hay que pedir al jugador el numero que esta asociado al movimiento que quiere hacer
+            val  eleccion = scala.io.StdIn.readLine("Elige movimiento:").toInt
+            //guardo en destino el valor asociado al numero elegido (accedo a posicion final atraves de el)
+            val destino = opciones(eleccion)
+  
+            //ya tenemos el movimiento guardado, ahora creamos un nuevo estado con la nueva casilla de la liebre,
+            //el cambio de turno al proximo jugador(sabuesos) y las casillas de los sabuesos que se habran mantenido
+            val nuevoEstado = Estado(
+              liebre = destino,
+              sabuesos = estado.sabuesos,
+              turno = Jugador.Sabuesos
+            )
+            val modoIA= true
+            // vuelvo a llamar al bucle de juego con su nuevo estado para continuar la partida 
+        bucleJuego(tablero,nuevoEstado, modoIA)
 
         // ahora hago el mismo proceso pero con los sabuesos
         else
@@ -73,8 +84,9 @@ object BucleJuego:
             sabuesos = estado.sabuesos -origen + destino,
             turno = Jugador.Liebre
           )
-          // vuelvo a llamar al bucle de juego con su nuevo estado para continuar la partida
-          bucleJuego(tablero, nuevoEstado)
+          val modoIA = true 
+          // vuelvo a llamar al bucle de juego con su nuevo estado para continuar la partida 
+        bucleJuego(tablero, nuevoEstado, modoIA)
 
 
 

@@ -5,3 +5,10 @@ case class Posicion(col: Columna, fila: Fila):
   def y: Int = fila.valor
   //con el override consigo que se imprima por ejemplo M.A como posición
   override def toString : String = s"${col}.${fila}"
+
+  
+  //se usa poniendo puntoinicial.manhattan(puntofinal) donde punto inicial y punto final son los puntos entre los que 
+  //quiero saber la distancia
+  def manhattan(other: Posicion): Int =
+    math.abs(this.x - other.x) + math.abs(this.y - other.y)
+
