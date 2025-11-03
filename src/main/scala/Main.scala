@@ -41,9 +41,27 @@ object miPrograma extends App
     println("=== MOVIMIENTOS POSIBLES DE LA LIEBRE ===")
     println(movimientosliebre)
 
-//PRUEBA DEL BUCLE DE JUEGO 
+//PRUEBA DEL BUCLE DE JUEGO
+//sin el modo de IA, se juega con los dos personajes
+//@main def mainJuegoLiebreSabuesos(): Unit =
+//  println(" *** JUEGO DE LA LIEBRE Y LOS SABUESOS *** ")
+//
+//  val turnoInicial = sortearTurno()
+//  println(s"\n Empieza jugando: ${turnoInicial}")
+//
+//  val estadoInicial = Estado(
+//    liebre = TableroClasicoLyS.posicionInicialLiebre,
+//    sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
+//    turno = turnoInicial
+//  )
+//
+//  val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial)
+//
+//  println(s"\n Fin de la partida. El ganador es: ${ganador} ")
 
-@main def mainJuegoLiebreSabuesos(): Unit =
+//PRUEBA DEL BUCLE DE JUEGO CON LA IA DE LA LIEBRE
+    
+@main def mainJuegoLiebreSabuesos(): Unit=
   println(" *** JUEGO DE LA LIEBRE Y LOS SABUESOS *** ")
 
   val turnoInicial = sortearTurno()
@@ -54,8 +72,8 @@ object miPrograma extends App
     sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
     turno = turnoInicial
   )
-
-  val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial)
+  val modoIA = true //si o si juego con los sabuesos y la liebre juega "sola"
+  val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial, modoIA)
 
   println(s"\n Fin de la partida. El ganador es: ${ganador} ")
 

@@ -20,15 +20,14 @@ object BucleJuego:
           //calculo los movimientos posibles de la liebre
           val movimientos= MovimientoLiebre.movimientosPosibles(tablero, estado)
           if modoIA == true then
-            /**MODOIA -> LA LIEBRE SE MUEVE SOLA A LA POSICION MAS OPTIMA PARA GANAR**/
+            /**MODO IA -> LA LIEBRE SE MUEVE SOLA A LA POSICION MAS OPTIMA PARA GANAR**/
             //quiero evaluar los movimientos en funcion a la tupla de evaluar movimientos
             //movimientos es un Set[Posicion] que no sabemos cuantos elementos tiene, pero necesito acceder a cada uno de ellos
             //para evaluarlos y luego quedarme con el que tenga el primer elemento mayor, en caso de haber dos iguales
             //me quedo con el que tenga el mayor en el segundo elemento
             
             
-            val List()= movimientos.toList 
-          if modoIA == false then
+            if modoIA == false then
             /***FUNCIONAMIENTO NORMAL, IMPRIME LOS MOVIMIENTOS Y SE ELIGEN POR NUMERO**/
             //imprimo los movimientos posibles de la liebre
             println(s"\n Turno de la Liebre: elige un movimiento (introduciendo el número)")
