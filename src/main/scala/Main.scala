@@ -41,8 +41,8 @@ object miPrograma extends App
     println("=== MOVIMIENTOS POSIBLES DE LA LIEBRE ===")
     println(movimientosliebre)
 
-//PRUEBA DEL BUCLE DE JUEGO
-//sin el modo de IA, se juega con los dos personajes
+////PRUEBA DEL BUCLE DE JUEGO
+////sin el modo de IA, se juega con los dos personajes
 //@main def mainJuegoLiebreSabuesos(): Unit =
 //  println(" *** JUEGO DE LA LIEBRE Y LOS SABUESOS *** ")
 //

@@ -41,8 +41,50 @@ object IALiebre:
     
     //devuelvo la tupla 
     (primerelemento, sumaDistancias)
+
+
+    //hago una funcion que me devuelva la tupla con mayor primer elemento en una lista por si hubiese mas tuplas con
+    //el mismo primer elemento 
+  def encontrarMejorMovimiento(mapa: Map[Posicion, (Int, Int)]): List[(Posicion, (Int, Int))] =
+    //Pongo 0 como valor maximo para que siempre que encuentre uno mas grande que ese lo sustituyo
+    var Valormax = 0
+    var mejorMovimiento: List[(Posicion, (Int, Int))] = List()
+    //valor es la tupla con primerelemento y sumaDistancias
+    for ((pos, tupla) <- mapa) do
+      //si el primer valor del primer elemento de la tupla que estoy mirando es mayor que 0, lo reemplazo
+      if (tupla._1 > Valormax) then
+        Valormax = tupla._1
+        mejorMovimiento = List((pos, tupla))
+      //si estan en empate la añado  
+      else if (tupla._1 == Valormax)
+        mejorMovimiento = (pos, tupla) :: mejorMovimiento
+
+      else //tupla._1 (que es primer elemento) es menor que el que ya tengo guardado entonces mejorMovimiento se queda igual
+        mejorMovimiento = mejorMovimiento
+
+    //devuelvo la lista mejor Movimiento que puede tener un solo elemento en cuyo caso ya se a donde mover la liebre
+    //o puede tener varios en cuyo caso me quedo con el que tenga mayor sumaDistancias(Segundo elemento de la tupla)    
+    mejorMovimiento 
+  
+  //hago un segundo metodo para usar en el caso de que la lista mejores movimientos tenga mas de 1 elemento
+  //desempate lo que hace es coger la lista con los candidatos a mejores elementos, todos tendran el mismo valor en el primer elemento
+  //y para decidir con cual quedarme recorre la lista como en la anterior funcion y añade a la nueva el que mayor valor tenga, si
+  //encuentra otra tupla con mayor valor en el segundo elemento esta sustituye a la anterior, de forma que solo puede quedar
+  //un tupla la cual va asociada a una posicion la cual sera la posicion a la que se mueva la liebre  
+  def desempate (listamejoresmovimientos: List[(Posicion,(Int,Int))]) :List[(Posicion, (Int, Int))] =
+    var Valormax=0
+    var mejorMovimiento: List[(Posicion, (Int, Int))] = List()
+    for ((pos, tupla) <- listamejoresmovimientos) do
+      if (tupla._2 > Valormax) then 
+        Valormax= tupla._2
+        mejorMovimiento = List((pos,tupla))
+
+      else 
+        mejorMovimiento
+        
+    mejorMovimiento
       
-      
+    
 
   
 
