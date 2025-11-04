@@ -32,24 +32,63 @@ case object MovimientoSabueso extends MovimientoFicha:
     //esto lo va a hacer de forma que el primer elemento de la tupla sea la posicion inicial(me ayuda a identificar
     //además de que sabueso se trata) y el segundo una de las posiciones a las que se puede mover, habra tantos
     //pares como estos como movimientos posibles
-    //un ejemplo sería: sabueso 1 tiene dos opciones de movimientos:(I1M, MM),(I1M, MB),
-    // sabueso 2 tiene una opcion de movimiento: (MM, D1M) y por último sabueso 3 tiene dos opciones de
-    // movimientos:(D1M, D2M), (D1M, D1B), todos estos dentro de un set
+    //los indices se ponen en bucle juego
+    //un ejemplo sería:
+    //1 -> Sabueso en D1.M se mueve a D1.B
+    //2 -> Sabueso en I1.A se mueve a M.A
+    //3 -> Sabueso en D1.M se mueve a D2.M
 
-    //creo un "acumulador" en el que ir guardando los movimientos
-    var resultado = Set.empty[(Posicion, Posicion)]
-    val ocupadas= estado.ocupadas //casillas ocupadas por la liebre y los demas sabuesos
-    //voy a ir recorriendo cada sabueso y guardando su posicion junto con sus posibles movimientos
-    for sabueso <- estado.sabuesos do //sabueso es la posicion del sabueso que estoy recorriendo
-      val adyacentes = tablero.movimientosDesde(sabueso)
-      //en vez de eliminar las posiciones a la izquierda voy a guardar las de la derecha:
-      val derecha = adyacentes.filter(_.x >= sabueso.x)
-      //quito las posiciones ocupadas:
-      val movimientosFinales = derecha.diff(ocupadas)
+    //guardo las casillas ocupadas para quitar esas de los movimientos posibles
+    val ocupadas = estado.ocupadas
+    //necesito una funcion auxiliar recursiva para ir guardando en un set posicion las posibilidades
+    def recorrerSabuesos(sabrestantes: List[Posicion], acum : Set[(Posicion,Posicion)]): Set[(Posicion,Posicion)]= sabrestantes match
+      //si no me quedan sabuesos por recorrer en mi lista devuelvo el acum que es el Set con las posiciones iniciales y finales(a donde se mueven)
+      case Nil => acum
+      //en caso de que tenga un sabueso en la cabeza de sabrestantes y luego la cola guardo las posibles posiciones para ese sabueso
+      case sabueso :: cola =>
+        // busco todos los movimientos posibles (todas las casillas adyacentes a la posicion del sabueso
+        val adyacentes = tablero.movimientosDesde(sabueso)
+        //como el sabueso no puede retroceder guardo solo aquellas casillas de la lista de adyacencias que esten mas a la derecha o en la misma columna
+        //estoy filtrando que la coordenada x de las adyacentes sea mayor o igual que la coord x de la posicion del sabueso
+        val derechaoigual = adyacentes.filter(_.x >= sabueso.x)
+        //quito las posiciones ocupadas:
+        val movimientosFinales = derechaoigual.diff(ocupadas)
+        //creo las tuplas con (posicionsabueso, destino) destino seran las posiciones posibles tras aplicar las restricciones (que no este ocupada,
+        //y que no retroceda)
+        val tuplasmovimientos = movimientosFinales.map(destino => (sabueso, destino))
 
-      for destino <- movimientosFinales do
-        resultado = resultado + ((sabueso, destino))
+        recorrerSabuesos(cola , acum ++ (tuplasmovimientos))
 
-    resultado //devuelvo los pares finales de movimientos posibles
+      recorrerSabuesos(estado.sabuesos.toList, Set.empty)
+
+//ademas de imprimir los movimientos con los indices la voy a aprovechar para que me devuelva un Map con el incice asociado a la tupla de posiciones
+def indicesMovimientosSabuesos(movimientos: Set[(Posicion,Posicion)]): Map[Int, (Posicion, Posicion)] =
+  //me va a poner indice a cada una de las tuplas del set
+  //necesito una funcion auxiliar recursiva
+  def indicesAux(lista:List[(Posicion,Posicion)], indice:Int,mapa: Map[Int, (Posicion, Posicion)]) : Map[Int, (Posicion, Posicion)]= lista match
+    case Nil => mapa
+    case (origen, destino) :: cola =>
+      println(s" $indice -> Sabueso en $origen se mueve a $destino")
+      //llamada recursiva que vaya acumulando en el mapa las tuplas
+      indicesAux(cola,indice+1, mapa + (indice -> (origen,destino)))
+      
+    //inicializo la fAux con indice 1 y mapa vacio
+    indicesAux(movimientos.toList , 1, Map.empty)
+
+//ademas de imprimir los movimientos con los indices la voy a aprovechar para que me devuelva un Map con el incice asociado a la tupla de posiciones
+def indicesMovimientosLiebre(movimientos: Set[Posicion]): Map[Int, Posicion] =
+  //me va a poner indice a cada una de las tuplas del set
+  //necesito una funcion auxiliar recursiva
+  def indicesAux(lista:List[Posicion], indice:Int,mapa: Map[Int, Posicion]) : Map[Int,Posicion ]= lista match
+    case Nil => mapa
+    case posicionfinal :: cola =>
+      println(s" $indice -> Liebre se mueve a $posicionfinal")
+      //llamada recursiva que vaya acumulando en el mapa las tuplas
+      indicesAux(cola,indice+1, mapa + (indice -> posicionfinal))
+
+  //inicializo la fAux con indice 1 y mapa vacio
+  indicesAux(movimientos.toList , 1, Map.empty)
+
+
 
 

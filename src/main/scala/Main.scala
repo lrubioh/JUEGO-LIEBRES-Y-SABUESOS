@@ -1,4 +1,4 @@
-import TableroClasicoLyS.{D1B, MA, MM}
+import TableroClasicoLyS.{D1A, D1B, I1A, MA, MM}
 
 import scala.*
 
@@ -60,7 +60,7 @@ object miPrograma extends App
 //  println(s"\n Fin de la partida. El ganador es: ${ganador} ")
 
 //PRUEBA DEL BUCLE DE JUEGO CON LA IA DE LA LIEBRE
-    
+
 @main def mainJuegoLiebreSabuesos(): Unit=
   println(" *** JUEGO DE LA LIEBRE Y LOS SABUESOS *** ")
 
@@ -76,4 +76,11 @@ object miPrograma extends App
   val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial, modoIA)
 
   println(s"\n Fin de la partida. El ganador es: ${ganador} ")
-
+//
+//@main def PruebaTablero(): Unit=
+//  println(s"Las posiciones del tablero donde vas a jugar son: ")
+//  println(s"            I1A------MA-----D1A  ")
+//  println("          ╱   |  \\   |  /    |   \\")
+//  println(s"      I2M---I1M------MM-----D1M---D2M  ")
+//  println("         \\   |   /   |  \\   |  / ")
+//  println(s"            I1B------MB-----D1B   ")
