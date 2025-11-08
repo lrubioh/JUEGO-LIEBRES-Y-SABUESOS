@@ -1,61 +1,57 @@
 object IASabuesos:
   //Para la IA de los sabuesos podemos utilizar como base la IA de la liebre, de tal forma que usaremos una tupla con la que evaluar los movimientos
   //a diferencia de la IA de la liebre en esta tupla el mejor movimiento sera aquel con menor valor
-  def evaluarMovimientoSabuesos(tablero: TableroJuego, estado:Estado, movimientos:Set[(Posicion,Posicion)]): Map[Posicion,(Int,Int)] =
+  def evaluarMovimientoSabuesos(tablero: TableroJuego, estado:Estado, movimientos:Set[(Posicion,Posicion)]): Map[(Posicion,Posicion),(Int,Int)] =
     // esta funcion evaluara cada uno de los movimiento con una tupla de tal forma que cuanto menor sea el valor mejor sera el
     // movimiento, el primer elemento de la tupla sera el numero de sabuesos rebasados (entendiendo por rebasados tambien que
     // esten en la misma columna que la liebre) y el segundo elemento sera el numero de posiciones posibles que tendra la liebre
     // cuando el sabueso se mueva a la posicion destino, al igual que el primer elemento cuanto menor sea su valor mejor movimiento sera
     //devolvera un map donde el indice es la posicion de destino y contiene las tuplas para cada uno de los movimientos
-
-    //primero convierto los Set de movimientos en una lista para poder guardar por separado el origen y el destino
-    val listaMov = movimientos.toList
-    val origen= listaMov(0)
-    val destino = listaMov(1)
-
-    //guardo el nuevo estado de los sabuesos con los dos que no se mueven tal cual y quitandole el origen del que se mueve y sumandole el destino
-    val nuevoEstadoSabuesos = estado.sabuesos -origen + destino
-
-    //para guardar el primer elemento de la tupla debo contar el numero de sabuesos rebasados en las nuevas posiciones (en el nuevo estado)
-
-    val sabuesosrebasados= nuevoEstadoSabuesos.foldLeft(0)((acum, sabuesos)=> if estado.liebre.x <= sabuesos.x then acum +1 else acum)
-
-    //ya tenemos calculado el primer elemento de la tupla, ahora debo calcular el segundo para luego guardarlos
-
-    //ahora hay que calcular los movimientos posibles de la liebre con el nuevo estado de los sabuesos
-    //necesito crear el nuevo estado de la partida para con el ver los mov de la liebre
-    val nuevoestado=Estado(
-      liebre = TableroClasicoLyS.posicionInicialLiebre,
-      sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
-      turno = estado.turno
-    )
-    //movimientos liebre es un Set[Posicion]
-    val movimientosLiebre = MovimientoLiebre.movimientosPosibles(tablero, nuevoestado)
-    //para saber si longitud (segundo elemento de la tupla) lo convertire en lista y vere la longitud de esta
-    val nummovLiebre=movimientosLiebre.toList.length
-    //devuelvo la tupla
-    (sabuesosrebasados,nummovLiebre)
-    //creo y devuelvo un mapa para facilitar luego la eleccion de movimientos
-    val mapaEvaluaciones= Map()
-
+    def recorrerPosiblesMovimientos(lista:List[(Posicion,Posicion)], mapa:Map[(Posicion,Posicion),(Int,Int)]): Map[(Posicion,Posicion),(Int,Int)]=lista match
+      //esta funcion va a convertir los Set de los movimientos en una lista que voy a ir recorriendo a la vez que para cada movimiento guardo en un 
+      //mapa donde la clave es una tupla con el origen y el destino y esta asociada con su tupla evaluada
+      
+      case Nil => mapa //si ya no quedan movimientos por recorrer devuelvo el mapa 
+      //si tengo 
+      case (origen,destino)::cola=> 
+        //si tengo un movimiento y luego la cola evaluo ese movimiento, para eso necesito "mover" el sabueso al destino para ver las evaluaciones en el destino
+        val nuevoSabuesos= estado.sabuesos -origen + destino
+        //calculo el primer elemento => num de sabuesos rebasados
+        val sabuesosrebasados= nuevoSabuesos.foldLeft(0)((acum,sab)=> if estado.liebre.x <= sab.x then acum + 1 else acum)
+        //calculo el segundo valor de la tupla : movimientos posibles de la liebre
+        //primero necesito poner un nuevo estado a partir del que calcular lo mov posibles de la liebre
+        val nuevoEstado = Estado(
+          liebre = estado.liebre,
+          sabuesos = nuevoSabuesos,
+          turno = estado.turno
+        )
+        val movimientosLiebre= MovimientoLiebre.movimientosPosibles(tablero,nuevoEstado).toList
+        val numMovLiebre= movimientosLiebre.length
+        
+        val evaluacion = (sabuesosrebasados, numMovLiebre)
+        //llamo a la funcion con el resto de mov (cola) , y añado al mapa el mov que he evaluado 
+        recorrerPosiblesMovimientos(cola,mapa+ ((origen,destino)->evaluacion ))
+        
+    recorrerPosiblesMovimientos(movimientos.toList,Map.empty)
+  
   // ahora con el mapa que tengo en que los indices son los destinos y el "contenido" son las tuplas que hace la funcion evaluarMovimientoSabuesos
   //esta lo que hara sera buscar el elemento que tenga el menor valor en el primer valor de la tupla, en caso de haber mas de uno
   //con el mismo primer valor guardare ambos en una lista y usare la funcion desempate
-  def encontrarMejorMovimiento(mapa: Map[Posicion,(Int,Int)]):List[(Posicion,(Int,Int))]=
+  def encontrarMejorMovimiento(mapa: Map[(Posicion,Posicion),(Int,Int)]):List[((Posicion,Posicion),(Int,Int))]=
     //hago una funcion recursiva que recorra el mapa lista por lista y en una nueva lista(mejores) guarde los mejores elementos de movimientos
-    def recorrerMapa(movimientos: List[(Posicion, (Int, Int))], valorMin: Int, mejores: List[(Posicion, (Int, Int))]): List[(Posicion, (Int, Int))] = movimientos match
+    def recorrerMapa(movimientos: List[((Posicion,Posicion), (Int, Int))], valorMin: Int, mejores: List[((Posicion,Posicion), (Int, Int))]): List[((Posicion,Posicion), (Int, Int))] = movimientos match
       case Nil => mejores
-      case (posicion,tupla):: cola =>
+      case (tuplaposiciones,tuplaevaluaciones):: cola =>
         //quiero la tupla con menor valor en su primer elemento
-        val primerelementotupla = tupla._1
-        if primerelementotupla < valorMin then
+        val primerelementotuplaevaluaciones = tuplaevaluaciones._1
+        if primerelementotuplaevaluaciones < valorMin then
           //si el primer elemento es menor que el valorMin(sera el Int.ManValue, el mayor entero posible) entonces guardo esa tupla en mejores
           //(si hubiese otra tendria menor valor con lo que la sustituyo) y vuelvo a llamar a la funcion recorrer con el resto de la tupla
-          recorrerMapa(cola, primerelementotupla,List((posicion,tupla)))
+          recorrerMapa(cola, primerelementotuplaevaluaciones,List((tuplaposiciones,tuplaevaluaciones)))
 
-        else if primerelementotupla == valorMin then
+        else if primerelementotuplaevaluaciones == valorMin then
           //si el primer elemento es igual que uno que ya habia no lo sustituyo sino que lo añado
-          recorrerMapa(cola, primerelementotupla,(posicion,tupla)::mejores)
+          recorrerMapa(cola, primerelementotuplaevaluaciones,(tuplaposiciones,tuplaevaluaciones)::mejores)
 
         else
           //si no es menor ni igual no hago nada con el, sigo recorriendo el mapa con el resto y con valorMin
@@ -72,14 +68,14 @@ object IASabuesos:
   //con el mismo segundo elemento serian exactamente iguales con lo que daria igual cual coger, me quedo con la que primero evalue
 
   //le paso la lista que me devuelve encontrarMejoresMovimientos y me devuelve una lista con un solo elemento (Posicion, (Int, Int)), me dice a que pos mover el sabueso
-  def desempate(listamejoresmovimientos: List[(Posicion,(Int,Int))]) :List[(Posicion, (Int, Int))] =
-    def recorrerdesempate( lista:List[(Posicion, (Int, Int))], valorMin: Int, mejor: List[(Posicion, (Int, Int))]): List[(Posicion, (Int, Int))] = lista match
+  def desempate(listamejoresmovimientos: List[((Posicion,Posicion),(Int,Int))]) :List[((Posicion,Posicion), (Int, Int))] =
+    def recorrerdesempate( lista:List[((Posicion,Posicion), (Int, Int))], valorMin: Int, mejor: List[((Posicion,Posicion), (Int, Int))]): List[((Posicion,Posicion), (Int, Int))] = lista match
       case Nil => mejor
-      case (posicion,tupla)::cola =>
+      case (tuplaposiciones,tuplaevaluaciones)::cola =>
         //voy a mirar si ese primer elemento es menor que el valor min (lo guardo/sustituyo) o si es mayor(no hago nada con el)
-        val segundoelementotupla= tupla._2
-        if segundoelementotupla< valorMin then
-          recorrerdesempate(cola,segundoelementotupla,List((posicion,tupla)))
+        val segundoelementotuplaevaluaciones= tuplaevaluaciones._2
+        if segundoelementotuplaevaluaciones< valorMin then
+          recorrerdesempate(cola,segundoelementotuplaevaluaciones,List((tuplaposiciones,tuplaevaluaciones)))
 
         else
           recorrerdesempate(cola, valorMin,mejor)
@@ -89,6 +85,26 @@ object IASabuesos:
 
   //para implementar el como elegir cual es el mejor movimiento en el bucle de juego y que sea mas sencilla creamos una funcion
   //que use las dos ultimas implementaciones para decidir cual es el mejor movimiento y quu devuelva cual es el destino final
-  def eleccionMejorMovimiento(movimientos:Set[Posicion],tablero:TableroJuego,estado: Estado):Posicion=
+  def eleccionMejorMovimiento(movimientos:Set[(Posicion,Posicion)],tablero:TableroJuego,estado: Estado):Posicion=
+    // guardo el mapa de evaluaciones para usar encontrarMejorMovimiento y que me devuelva el mejor/mejores movimientos 
+    val evaluaciones = evaluarMovimientoSabuesos(tablero,estado,movimientos)
+    val mejoresMovimientos= encontrarMejorMovimiento(evaluaciones)
+    
+    //si mejoresMovimientos es un lista con un solo movimiento ya tengo a donde moverme 
+    if mejoresMovimientos.length==1 then 
+      //el destino es el segundo elemento(._2) de la primer tupla(._1) del primer y unico elemento de la lista mejoresMovimientos(0)
+      val destino = mejoresMovimientos(0)._1._2
+      destino
+      
+    //si mejoresMovimientos tiene mas de un elemento uso desempate
+    else 
+      //mejorMovimiento es una lista con un solo movimiento, cojo el destino y ya tengo a donde se mueve el sabueso
+      val mejorMovimiento= desempate(mejoresMovimientos)
+      //el destino el segundo elemento(._2) de la primer tupla(._1) del primer y unico elemento de la lista mejorMovimiento(0)
+      val destino = mejorMovimiento(0)._1._2
+      destino 
+      
+      
+    
     
 
