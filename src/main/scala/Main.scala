@@ -76,11 +76,3 @@ object miPrograma extends App
   val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial, modoIA)
 
   println(s"\n Fin de la partida. El ganador es: ${ganador} ")
-//
-//@main def PruebaTablero(): Unit=
-//  println(s"Las posiciones del tablero donde vas a jugar son: ")
-//  println(s"            I1A------MA-----D1A  ")
-//  println("          ╱   |  \\   |  /    |   \\")
-//  println(s"      I2M---I1M------MM-----D1M---D2M  ")
-//  println("         \\   |   /   |  \\   |  / ")
-//  println(s"            I1B------MB-----D1B   ")

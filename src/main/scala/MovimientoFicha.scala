@@ -25,8 +25,7 @@ case object MovimientoSabueso extends MovimientoFicha:
     //todas las casillas ya ocupadas, con esto ya tendria la lista de posiciones a las que puede avanzar,
     //lo debo hacer para cada uno de los sabuesos, hago una variacion del metodo principal.
     movimientosPosiblesPorSabueso(tablero, estado).map(_._2)
-
-
+  
   def movimientosPosiblesPorSabueso(tablero: TableroJuego, estado: Estado): Set[(Posicion, Posicion)]=
     //me va a devolver por cada sabueso una lista con sus posibles movimientos, para saber de que sabueso se trata
     //esto lo va a hacer de forma que el primer elemento de la tupla sea la posicion inicial(me ayuda a identificar
@@ -61,7 +60,11 @@ case object MovimientoSabueso extends MovimientoFicha:
 
       recorrerSabuesos(estado.sabuesos.toList, Set.empty)
 
-//ademas de imprimir los movimientos con los indices la voy a aprovechar para que me devuelva un Map con el incice asociado a la tupla de posiciones
+
+/**FUCIONES "AUXILIARES" QUE ME AYUDAN A PONER LOS INDICES A LOS POSIBLES MOVIMIENTOS**/
+//Estas se usan solo cuando hay que dar al jugador a elegir a que posicion mover su personaje, si la IA esta jugando con alguno de ellos, o con los dos no se imprimira nada 
+
+//ademas de imprimir los movimientos con los indices la voy a aprovechar para que me devuelva un Map con el indice asociado a la tupla de posiciones
 def indicesMovimientosSabuesos(movimientos: Set[(Posicion,Posicion)]): Map[Int, (Posicion, Posicion)] =
   //me va a poner indice a cada una de las tuplas del set
   //necesito una funcion auxiliar recursiva

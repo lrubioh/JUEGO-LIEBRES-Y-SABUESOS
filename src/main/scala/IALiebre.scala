@@ -15,12 +15,12 @@ object IALiebre:
 
     val rebasadosestadoInicial : Int =
       //usamos foldLeft para que cuando se cumple la condicion se le sume 1 al acc que va ser el total de sabuesos rebasados
-      estado.sabuesos.foldLeft(0)((acc,sab)=> if estado.liebre.x < sab.x then acc + 1 else acc)
+      estado.sabuesos.foldLeft(0)((acum,sab)=> if estado.liebre.x < sab.x then acum + 1 else acum)
 
     //calculo los sabuesos que habra rebasado si se mueve a destino
 
     val rebasadosPorMovimiento : Int =
-      estado.sabuesos.foldLeft(0)((acc: Int, sab: Posicion) => if destino.x < sab.x then acc + 1 else acc )
+      estado.sabuesos.foldLeft(0)((acum: Int, sab: Posicion) => if destino.x < sab.x then acum + 1 else acum )
 
     //Calculo la metrica que devolvera con respecto de la meta si ya había rebasado alguno en la poscion inicial
     val metricaMeta : Int = -destino.manhattan(meta)
