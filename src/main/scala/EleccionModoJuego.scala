@@ -1,13 +1,27 @@
 object EleccionModoJuego:
   //creamos una funcion que pregunte al usuario que modo de juego quiere y comience el bucle de juego con el modo elegido
   def modoJuego(): Unit =
+
     //primero muestra por pantalla este mensaje tras el usuario responder que si que quiere jugar
-    println("\n ¡GENIAL!, elige un modo de juego:  \n ")
-    //imprime todas las opciones de modo de juego que hay para que el usuario introduzca el numero de su eleccion
-    println("1 -> Jugar con los sabuesos, Liebre IA")
-    println("2 -> Jugar con la liebre, sabuesos IA")
-    println("3 -> Jugar con ambos(modo 2 jugadores)")
-    println("4 -> Liebre y Sabuesos IA")
+    println("\n ¡GENIAL!, ESTOS SON LOS MODOS DE JUEGO:  \n ")
+    //imprime todas las opciones de modo de juego que hay para que el usuario introduzca el numero de su eleccion, se imprime con
+    //colores usando el modelo de pintarnodo
+
+    val RESET = "\u001B[0m"
+    val AZUL = "\u001B[34m"
+    val BLANCO = "\u001B[37m"
+    val ROJO   = "\u001B[31m"
+
+    println(s"     ${AZUL}==================================${RESET}     ${AZUL}====================================${RESET}")
+    println(s"     ${AZUL}|${RESET}  ${ROJO}(1)${RESET}-> JUGAR CON LOS SABUESOS  ${RESET}${AZUL}|${RESET}     ${AZUL}|${RESET}     ${ROJO}(2)${RESET}->JUGAR CON LA LIEBRE     ${RESET}${AZUL}|${RESET}")
+    println(s"     ${AZUL}|${RESET}       ${RESET}(la liebre es IA)        ${RESET}${AZUL}|${RESET}     ${AZUL}|${RESET}       ${RESET}(los sabuesos son IA)      ${RESET}${AZUL}|${RESET}")
+    println(s"     ${AZUL}==================================${RESET}     ${AZUL}====================================${RESET}")
+
+    println()
+    println(s"     ${AZUL}==================================${RESET}     ${AZUL}====================================${RESET}")
+    println(s"     ${AZUL}|${RESET}  ${ROJO}(3)${RESET}-> JUGAR CON LOS SABUESOS  ${RESET}${AZUL}|${RESET}     ${AZUL}|${RESET}       ${ROJO}(4)${RESET}-> AMBOS SON IA         ${RESET}${AZUL}|${RESET}")
+    println(s"     ${AZUL}|${RESET}      ${RESET}Y LA LIEBRE (no IA)       ${RESET}${AZUL}|${RESET}     ${AZUL}|${RESET}                                  ${RESET}${AZUL}|${RESET}")
+    println(s"     ${AZUL}==================================${RESET}     ${AZUL}====================================${RESET}")
 
     val eleccion = scala.io.StdIn.readLine("\nIntroduce el número del modo que deseas jugar: ").toInt
 

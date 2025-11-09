@@ -12,13 +12,17 @@ object BucleJuego:
     tablero.esFinPartida(estado) match
       //en el caso de que haya ganador imprimo el mensaje del ganador
       case Some(ganador) =>
-        println ("*********************** EL GANADOR ES  *******************")
-        println(s"*                         $ganador                       *  ")
-        println(" **********************************************************")
-    
+        println ("\n*********************** EL GANADOR ES  *******************")
+        println(s"*                         $ganador                       *")
+        println("**********************************************************\n")
+
         //quiero que cuando la partida acabe me de la opcion de jugar otra partida, si la respuesta es que no se acaba el juego
         //si la respuesta es que si le vuelvo a dar a elegir el modo de juego
-        val Jugarotravez= scala.io.StdIn.readLine("\n¿quieres jugar otra partida? : (1 -> si , 2-> no) :  ").toInt
+        println("                ¿QUIERES JUGAR OTRA VEZ?\n")
+        println("     =============                   ===============")
+        println("     |  (1)->SI  |                   |   (2)->NO   |")
+        println("     =============                   ===============")
+        val Jugarotravez= scala.io.StdIn.readLine("\nIntroduce tu selección :  ").toInt
         if Jugarotravez == 1 then
           EleccionModoJuego.modoJuego()
         ganador
@@ -30,8 +34,10 @@ object BucleJuego:
       case None =>
         if estado.turno == Jugador.Liebre then
           //si es el turno de la liebre primero miro el contador, si lleva ya 25 mov entonces ha ganado
-          if estado.movimientosLiebre >=1 then
-            println("\n*** La liebre ha sobrevivido 25 turnos. ¡Gana la liebre! ***")
+          if estado.movimientosLiebre >=25 then
+            println("  ************************************************************")
+            println("  *   La liebre ha sobrevivido 25 turnos. ¡Gana la liebre!   *")
+            println("  ************************************************************")
             Jugador.Liebre
           //si lleva menos movimientos, sigue jugando con normalidad
           else
@@ -40,7 +46,9 @@ object BucleJuego:
 
             if  modoIA(Jugador.Liebre)==true then
 
-              println (s"\n Es el turno de la liebre \n")
+              println("\n==============================================")
+              println("|         ES EL TURNO DE LA LIEBRE           |")
+              println("==============================================\n")
               /**MODO IA -> LA LIEBRE SE MUEVE SOLA A LA POSICION MAS OPTIMA PARA GANAR**/
               //quiero evaluar los movimientos en funcion a la tupla de evaluar movimientos
               //movimientos es un Set[Posicion] que no sabemos cuantos elementos tiene, pero necesito acceder a cada uno de ellos
@@ -61,8 +69,9 @@ object BucleJuego:
             else
                /**FUNCIONAMIENTO NORMAL, IMPRIME LOS MOVIMIENTOS Y SE ELIGEN POR NUMERO**/
               //imprimo los movimientos posibles de la liebre
-              println(s"\n Turno de la Liebre: ")
-
+              println("\n==============================================")
+              println("|         ES EL TURNO DE LA LIEBRE           |")
+              println("==============================================")
               //imprimo el tablero con las posiciones para cuando se de a elegir se vea cuales son
               println(s"\n Las posiciones del tablero son:\n ")
               println(s"            I1A------MA-----D1A  ")
@@ -95,7 +104,9 @@ object BucleJuego:
         // ahora hago el mismo proceso pero con los sabuesos
         else
           if modoIA(Jugador.Sabuesos)==true then
-            println(s" \n Turno de los sabuesos: ")
+            println("\n==============================================")
+            println("|        ES EL TURNO DE LOS SABUESOS         |")
+            println("==============================================\n")
             //primero calculo los movimientos posibles de los sabuesos
             val movimientosSabuesos= MovimientoSabueso.movimientosPosiblesPorSabueso(tablero,estado)
             //con la funcion eleccionMejorMovimiento me devuelve una tupla (origen,destino) ya habiendo calculado
@@ -118,11 +129,13 @@ object BucleJuego:
             println(s"            I1A------MA-----D1A  ")
             println("          ╱   |  \\   |  /    |   \\")
             println(s"      I2M---I1M------MM-----D1M---D2M  ")
-            println("         \\   |   /   |  \\   |  / ")
+            println("         \\   |   /   |  \\   |   / ")
             println(s"            I1B------MB-----D1B   ")
             val movimientos = MovimientoSabueso.movimientosPosiblesPorSabueso(tablero, estado)
 
-            println(s" \n Turno de los sabuesos: ")
+            println("\n==============================================")
+            println("|        ES EL TURNO DE LOS SABUESOS         |")
+            println("==============================================\n")
             val opciones = indicesMovimientosSabuesos(movimientos)
 
             val eleccion = scala.io.StdIn.readLine("Elige movimiento (introduciendo el numero) :").toInt
