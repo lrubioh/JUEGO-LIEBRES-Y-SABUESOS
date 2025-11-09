@@ -85,6 +85,7 @@ def indicesMovimientosLiebre(movimientos: Set[Posicion]): Map[Int, Posicion] =
   def indicesAux(lista:List[Posicion], indice:Int,mapa: Map[Int, Posicion]) : Map[Int,Posicion ]= lista match
     case Nil => mapa
     case posicionfinal :: cola =>
+      
       println(s" $indice -> Liebre se mueve a $posicionfinal")
       //llamada recursiva que vaya acumulando en el mapa las tuplas
       indicesAux(cola,indice+1, mapa + (indice -> posicionfinal))
