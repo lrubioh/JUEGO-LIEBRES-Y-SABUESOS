@@ -1,78 +1,36 @@
-import TableroClasicoLyS.{D1A, D1B, I1A, MA, MM}
 
-import scala.*
-
-
-object miPrograma extends App
-//prueba para ver que el tablero se imprime
-@main def runJuegoLiebreYSabuesos(): Unit =
-  // Crear el estado inicial
-  val estadoInicial = Estado(
-    liebre = TableroClasicoLyS.posicionInicialLiebre,
-    sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
-    turno = Jugador.Liebre
-  )
-
-  // Pintar el tablero inicial
-  println("===ESTADO INICIAL DE LA PARTIDA===")
-  TableroClasicoLyS.pintarTablero(estadoInicial)
-
-//prueba para ver que funcionen bien los posibles movimientos
-@main def probarMovimientoFicha(): Unit =
-    // Estado inicial: liebre y sabuesos en sus posiciones de inicio
-    val estadoInicial = Estado(
-      liebre = TableroClasicoLyS.posicionInicialLiebre,
-      sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
-      turno = Jugador.Sabuesos
-    )
-
-    // Calculamos los movimientos posibles de los sabuesos
-    val movimientos = MovimientoSabueso.movimientosPosiblesPorSabueso(TableroClasicoLyS, estadoInicial)
-    // calculamos los movimientos posibles de la liebre
-    val movimientosliebre = MovimientoLiebre.movimientosPosibles(TableroClasicoLyS, estadoInicial )
-
-    // Mostramos los resultados de los sabuesos
-    println("=== MOVIMIENTOS POSIBLES DE LOS SABUESOS ===")
-    movimientos.foreach { case (origen, destino) =>
-      println(s"Sabueso en ${origen} puede moverse a ${destino}")
-    }
-
-    //Mostramos los resultados de la liebre como un set con todas las posibles casillas a las que moverse
-    println("=== MOVIMIENTOS POSIBLES DE LA LIEBRE ===")
-    println(movimientosliebre)
-
-////PRUEBA DEL BUCLE DE JUEGO
-////sin el modo de IA, se juega con los dos personajes
-//@main def mainJuegoLiebreSabuesos(): Unit =
-//  println(" *** JUEGO DE LA LIEBRE Y LOS SABUESOS *** ")
+object Juego extends App
 //
-//  val turnoInicial = sortearTurno()
-//  println(s"\n Empieza jugando: ${turnoInicial}")
-//
-//  val estadoInicial = Estado(
-//    liebre = TableroClasicoLyS.posicionInicialLiebre,
-//    sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
-//    turno = turnoInicial
-//  )
-//
-//  val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial)
-//
-//  println(s"\n Fin de la partida. El ganador es: ${ganador} ")
+@main def JUEGOLIEBREYSABUESOS():Unit=
+  println("                                                      ==========================================================")
+  println("                                                      |     Bienvenido al juego de la liebre y los sabuesos    |")
+  println("                                                      ==========================================================\n")
 
-//PRUEBA DEL BUCLE DE JUEGO CON LA IA DE LA LIEBRE
+  val instrucciones = scala.io.StdIn.readLine("Sabes jugar(1) o quieres ver una breve descripción del juego(2)->Introduce tu eleccion:").toInt
+  //solo muestra las instrucciones si el usuario asi lo decide, hemos tomado esta decisicon ya que si es por ejemplo la tercera
+  //partida no tiene sentido mostrarlo siempre al comienzo de una partida
+  if instrucciones == 2 then
+    //pongo una breve introduccion que permita entender mejor nuestro juego
+    println("==============================================================INSTRUCCIONES===========================================================================")
+    println("||  El objetivo de la liebre es llegar a la casilla de mas a la izquierda (I2M), la liebre tiene libertad de movimiento hacia todas las direcciones ||")
+    println("||  Los sabuesos deben acorralar a la liebre, pero solo pueden avanzar o mantenerse en su misma columna                                             ||")
+    println("======================================================================================================================================================")
 
-@main def mainJuegoLiebreSabuesos(): Unit=
-  println(" *** JUEGO DE LA LIEBRE Y LOS SABUESOS *** ")
+  //quiera o no ver las instrucciones, si quiere justo despues de mostrarlas y sino directamente se muestra este mensaje
+  //de eleccion para que el usuario decida si quiere jugar o no, en caso de no querer mostrara un mensaje y en caso de
+  //querer usaremos la funcion modoJuego para darle al usuario a elegir en que modo de juego quiere jugar, la propia funcion
+  //inicializa ya el bucle en juego en funcion a lo que el usuario decida
+  //imprimo la pregunta de si quieres jugar como botones para que quede mas tipo juego
+  println(" ¿QUIERES JUGAR A LA LIEBRE Y LOS SABUESOS?")
+  println("     =============                   ===============")
+  println("     |  (1)->SI  |                   |   (2)->NO   |")
+  println("     =============                   ===============")
 
-  val turnoInicial = sortearTurno()
-  println(s"\n Empieza jugando: ${turnoInicial}")
+  val quieresjugar= scala.io.StdIn.readLine("\nINTRODUCE EL NUMERO DE TU ELECCION:  ").toInt
 
-  val estadoInicial = Estado(
-    liebre = TableroClasicoLyS.posicionInicialLiebre,
-    sabuesos = TableroClasicoLyS.posicionesInicialesSabuesos,
-    turno = turnoInicial
-  )
-  val modoIA = true //si o si juego con los sabuesos y la liebre juega "sola"
-  val ganador = BucleJuego.bucleJuego(TableroClasicoLyS, estadoInicial, modoIA)
+  if quieresjugar== 1 then
+    EleccionModoJuego.modoJuego()
+  else
+    println ("Proceso de juego finalizado")
 
-  println(s"\n Fin de la partida. El ganador es: ${ganador} ")
+

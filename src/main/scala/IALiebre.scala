@@ -132,12 +132,3 @@ object IALiebre:
       val (posicion, tupla) = mejorMovimiento.head
       val destino = posicion
       destino
-
-
-
-
-
-
-
-
-

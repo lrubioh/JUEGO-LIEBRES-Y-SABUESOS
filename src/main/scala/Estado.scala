@@ -5,7 +5,8 @@ def sortearTurno(): Jugador =
   if Random.nextBoolean() then Jugador.Liebre else Jugador.Sabuesos
 
 //guarda donde estan los sabuesos, la liebre y a quien le toca jugar
-case class Estado(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador):
+//le añado un contador para que cuente los mov de la liebre, cuando esta llegue a 25 habra ganado la partida 
+case class Estado(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador, movimientosLiebre:Int):
   //metodo que devuelva las casillas ocupadas
   def ocupadas: Set[Posicion] = sabuesos + liebre
 //con estado.liebre me devuelve la casilla de la liebre y con estado.sabuesos
@@ -14,5 +15,5 @@ case class Estado(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador):
 
 object Estado:
   // companion object para construir un estado
-  def apply(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador): Estado =
-    new Estado(liebre, sabuesos, turno)
+  def apply(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador,movimientosLiebre: Int): Estado =
+    new Estado(liebre, sabuesos, turno, movimientosLiebre)

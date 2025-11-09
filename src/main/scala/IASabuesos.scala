@@ -37,7 +37,8 @@ object IASabuesos:
           val nuevoEstado = Estado(
             liebre = estado.liebre,
             sabuesos = nuevoSabuesos,
-            turno = estado.turno
+            turno = estado.turno,
+            movimientosLiebre= estado.movimientosLiebre
           )
           val movimientosLiebre= MovimientoLiebre.movimientosPosibles(tablero,nuevoEstado).toList
           val numMovLiebre= movimientosLiebre.length
@@ -122,8 +123,3 @@ object IASabuesos:
       //el destino el segundo elemento(._2) de la primer tupla(._1) del primer y unico elemento de la lista mejorMovimiento(0)
       val destino = mejorMovimiento(0)._1._2
       (origen,destino)
-
-
-
-
-
