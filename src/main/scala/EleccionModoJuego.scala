@@ -4,8 +4,9 @@ object EleccionModoJuego:
 
     //primero muestra por pantalla este mensaje tras el usuario responder que si que quiere jugar
     println("\n ¡GENIAL!, ESTOS SON LOS MODOS DE JUEGO:  \n ")
+    
     //imprime todas las opciones de modo de juego que hay para que el usuario introduzca el numero de su eleccion, se imprime con
-    //colores usando el modelo de pintarnodo
+    //colores usando de modelo el "ejemplo" pintarnodo
 
     val RESET = "\u001B[0m"
     val AZUL = "\u001B[34m"

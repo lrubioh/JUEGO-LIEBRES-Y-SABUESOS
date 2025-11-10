@@ -7,7 +7,6 @@ object IALiebre:
 
   //rebasar a un sabueso es que la posición x de la liebre este mas a la izq que la del sabueso
 
-
   def evaluarMovimiento(tablero: TableroJuego, estado: Estado, destino: Posicion) : (Int, Int)=
     val meta = tablero.posicionMetaLiebre
 
@@ -47,7 +46,7 @@ object IALiebre:
   // 1) hay un solo elemento ya que el primer elemento de la tupla es mayor que todos los demas, en cuyo caso ya tenemos la posicion a la que se movera la liebre
   //2) que havaya varios elementos con el mismo valor en el primer elemento de la tupla, en cuyo caso, tendre que hacer un desempate (creare la funcion )
   def encontrarMejorMovimiento(mapa: Map[Posicion, (Int, Int)]): List[(Posicion, (Int, Int))] =
-    //uso uan funcion recursiva que recorra el mapa como una lista
+    //uso una funcion recursiva que recorra el mapa como una lista
     def recorrerMapa(movimientos: List[(Posicion, (Int, Int))], valorMax: Int, mejores: List[(Posicion, (Int, Int))]): List[(Posicion, (Int, Int))] = movimientos match
       //necesito un valor max para ir añadiendo a mejores solo aquellos que tengan el primer valor mayor
       case Nil => mejores //cuando no queden elementos en movimientos devuelvo los que haya guadado en mejores
@@ -66,18 +65,16 @@ object IALiebre:
         else
           //en este caso el primer elemento de la tupla es menor que el valorMax o que el primer elemento de la tupla que ya esta guardada
           //con lo que volvere a llamar a la funcion para seguir buscando la tupla con mayor valor en el primer elemento,
-          //como mayor valor pondre el valorMax que ya estaba guardado y la lista la dejare como estuviese antes, la añado nada
+          //como mayor valor pondre el valorMax que ya estaba guardado y la lista la dejare como estuviese antes
           recorrerMapa(cola, valorMax,mejores)
 
     //inicializo la función recorrerMapa con el valorMax como el número mas pequeño posible para no arriesgarme a poner un numero
     // y que luego ninguno de los primeros elementos sea mayor que ese entonces no estaria seleccionando el mas grande
     recorrerMapa(mapa.toList, Int.MinValue, List())
-
-
-
+  
   //hago un segundo metodo para usar en el caso de que la lista mejores movimientos tenga mas de 1 elemento
   //desempate lo que hace es coger la lista con los candidatos a mejores elementos, todos tendran el mismo valor en el primer elemento de la tupla
-  //y para decidir con cual quedarse recorre la lista y añade a la nueva el que mayor valor tenga, si
+  //y para decidir con cual quedarse recorre la lista y añade a la nueva el que mayor valor tenga en el segundo elemento, si
   //encuentra otra tupla con mayor valor en el segundo elemento esta sustituye a la anterior, de forma que solo puede quedar
   //un tupla la cual va asociada a una posicion la cual será la posicion a la que se mueva la liebre
 

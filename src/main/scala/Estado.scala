@@ -14,6 +14,5 @@ case class Estado(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador, mov
 //estado.sabuesos devuelve un Set( , , ) con las tres posiciones de los sabuesos
 
 object Estado:
-  // companion object para construir un estado
   def apply(liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador,movimientosLiebre: Int): Estado =
     new Estado(liebre, sabuesos, turno, movimientosLiebre)

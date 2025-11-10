@@ -1,4 +1,4 @@
-//para representar las casillas necesitas crear la clase posicion
+//para representar las casillas necesitamos crear la clase posicion
 //esta debe ser una case class para poder comparar dos posiciones directamente con ==
 case class Posicion(col: Columna, fila: Fila):
   def x: Int = col.valor

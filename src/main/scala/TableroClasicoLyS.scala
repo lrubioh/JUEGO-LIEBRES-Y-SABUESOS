@@ -1,7 +1,7 @@
 //solo almacena la posicion de las fichas no tiene como tal el estado de la partida
 
 object TableroClasicoLyS extends TableroJuego:
-  
+  //creamos el tablero dandole a cada uno de los nodos una posicion
   val I1A = Posicion(Columna.I1, Fila.A)
   val MA = Posicion(Columna.M, Fila.A)
   val D1A = Posicion(Columna.D1, Fila.A)
@@ -18,8 +18,6 @@ object TableroClasicoLyS extends TableroJuego:
   val MB = Posicion(Columna.M, Fila.B)
   val D1B = Posicion(Columna.D1, Fila.B)
   
-//hacemos un objeto que extienda nuestra clase tablero y haga concretamente nuestro tablero
-
   // Lista de adyacencias (grafo)
   private val grafo: Map[Posicion, Set[Posicion]] = Map(
     I1A -> Set(I2M, I1M, MM, MA),
@@ -39,7 +37,7 @@ object TableroClasicoLyS extends TableroJuego:
     D1B -> Set(MB, D1M, MM, D2M)
   )
 
-  //tengo que implementar
+  
   //me dice las casillas posibles a las que me puedo mover
   override def movimientosDesde(p: Posicion): Set[Posicion] =
   // getOrElse es una funcion que me devuelve la lista de posiciones adyacentes a p(casilla) en caso

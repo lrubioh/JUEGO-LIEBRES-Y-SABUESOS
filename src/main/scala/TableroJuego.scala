@@ -1,5 +1,5 @@
 //hemos creado un tablero general para que se puedan implementar distintos tableros
-
+//en nuestro propio lo crearemos extendiendo este
 trait TableroJuego:
 
   // --- Devuelve las posiciones accesibles desde una posición ---
