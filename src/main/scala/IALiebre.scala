@@ -22,7 +22,7 @@ object IALiebre:
     val rebasadosPorMovimiento : Int =
       estado.sabuesos.foldLeft(0)((acum: Int, sab: Posicion) => if destino.x < sab.x then acum + 1 else acum )
 
-    //Calculo la metrica que devolvera con respecto de la meta si ya había rebasado alguno en la poscion inicial
+    //Calculo la metrica que devolvera con respecto de la meta si ya había rebasado alguno en la posicion inicial
     val metricaMeta : Int = -destino.manhattan(meta)
     //pongo - la distancia para que como luego me voy a quedar con el valor mas grande de ese elemento de la tupla
     //yo la que me quiero quedar es la mas pequeña entonces con el menos la mas pequeña sera la mas grande
